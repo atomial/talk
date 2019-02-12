@@ -14,7 +14,7 @@ export const settings = {
   closedTimeout: 604800,
   autoCloseStream: false,
   closedMessage: null,
-  customCssUrl: null,
+  customCSSURL: null,
   domains: ["localhost:8080"],
   editCommentWindowLength: 30000,
   communityGuidelinesEnable: false,
