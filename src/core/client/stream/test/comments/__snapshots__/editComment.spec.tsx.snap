@@ -209,7 +209,9 @@ exports[`edit a comment: edit form 1`] = `
           </time>
         </div>
       </div>
-      <div>
+      <div
+        className="HorizontalGutter-root HorizontalGutter-half"
+      >
         <label
           className="AriaInfo-root"
           htmlFor="comments-editCommentForm-rte-comment-0"
@@ -373,7 +375,9 @@ exports[`edit a comment: optimistic response 1`] = `
           </time>
         </div>
       </div>
-      <div>
+      <div
+        className="HorizontalGutter-root HorizontalGutter-half"
+      >
         <label
           className="AriaInfo-root"
           htmlFor="comments-editCommentForm-rte-comment-0"
@@ -1086,7 +1090,9 @@ exports[`shows expiry message: edit time expired 1`] = `
           </time>
         </div>
       </div>
-      <div>
+      <div
+        className="HorizontalGutter-root HorizontalGutter-half"
+      >
         <label
           className="AriaInfo-root"
           htmlFor="comments-editCommentForm-rte-comment-0"

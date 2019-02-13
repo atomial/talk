@@ -22,3 +22,6 @@ export { default as replaceHistoryLocation } from "./replaceHistoryLocation";
 export { default as createAccessToken } from "./createAccessToken";
 export { default as findParentsWithType } from "./findParentsWithType";
 export { default as findParentWithType } from "./findParentWithType";
+export {
+  default as createInvalidRequestError,
+} from "./createInvalidRequestError";

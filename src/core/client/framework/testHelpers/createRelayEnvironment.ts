@@ -1,8 +1,10 @@
+import { graphql, GraphQLSchema } from "graphql";
 import { IResolvers } from "graphql-tools";
-import { createFetch } from "relay-local-schema";
+
 import {
   commitLocalUpdate,
   Environment,
+  FetchFunction,
   Network,
   RecordProxy,
   RecordSource,
@@ -18,6 +20,7 @@ import {
 } from "talk-framework/lib/relay";
 
 import { loadSchema } from "talk-common/graphql";
+import { InvalidRequestError } from "talk-framework/lib/errors";
 
 export interface CreateRelayEnvironmentNetworkParams {
   /** project name of graphql-config */
@@ -48,6 +51,46 @@ export interface CreateRelayEnvironmentParams {
     | true;
   /** Use this source for creating the environment */
   source?: RecordSource;
+}
+
+function createFetch({
+  schema,
+  rootValue,
+  contextValue,
+}: {
+  schema: GraphQLSchema;
+  rootValue?: any;
+  contextValue?: any;
+}) {
+  return function fetchQuery(operation: any, variables: Record<string, any>) {
+    return graphql(
+      schema,
+      operation.text,
+      rootValue,
+      contextValue,
+      variables
+    ).then(payload => {
+      if (payload.errors) {
+        payload.errors.forEach(e => {
+          /**
+           * TODO: This is a hacky way to support custom errors during test.
+           * We are currently barred from using `extensions` as it is not
+           * supported inside `graphql-js` which we use for mocking away the
+           * GraphQL server.
+           *
+           * Related file: talk-framework/testHelpers/createInvalidRequestError.ts
+           * Related issue: https://github.com/graphql/graphql-js/issues/1591
+           */
+          const split = String(e.message).split(":");
+          if (split[0] === "INVALID_REQUEST_ERROR") {
+            throw new InvalidRequestError({ code: split[1] as any });
+          }
+        });
+        throw new Error(payload.errors.toString());
+      }
+      return payload;
+    });
+  };
 }
 
 /**
